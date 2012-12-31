@@ -68,15 +68,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_storage.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="keypathdialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_keypathdialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_keypathdialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="generatekey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,15 +93,6 @@
     </CustomBuild>
     <CustomBuild Include="storage.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="keypathdialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="keypathdialog.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GeneratedFiles\ui_keypathdialog.h">
-      <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="GeneratedFiles\ui_securedisk.h">
       <Filter>Generated Files</Filter>

@@ -9,9 +9,9 @@ SecureDisk::SecureDisk(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	connect(ui.encryptPushButton, SIGNAL(released()), this, SLOT(encryptFolder()));
-	connect(ui.decryptPushButton, SIGNAL(released()), this, SLOT(decryptStorage()));
-	connect(ui.generateKeysPushButton, SIGNAL(released()), this, SLOT(generateKeys()));
+	connect(ui.encryptPushButton, SIGNAL(clicked()), this, SLOT(encryptFolder()));
+	connect(ui.decryptPushButton, SIGNAL(clicked()), this, SLOT(decryptStorage()));
+	connect(ui.generateKeysPushButton, SIGNAL(clicked()), this, SLOT(generateKeys()));
 	
 }
 

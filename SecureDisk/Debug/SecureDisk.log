@@ -1,22 +1,27 @@
-﻿Build started 17.05.2015 23:42:41.
+﻿Build started 18.05.2015 16:39:35.
      1>Project "C:\Users\Андрей\Desktop\SecureDisk\SecureDisk\SecureDisk.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>CustomBuild:
+         Uic'ing securedisk.ui...
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\Qt5.4.1\5.4\msvc2013_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.4.1\5.4\msvc2013_opengl\include\QtCore /IC:\Qt\Qt5.4.1\5.4\msvc2013_opengl\include\QtGui /IC:\Qt\Qt5.4.1\5.4\msvc2013_opengl\include\QtWidgets /I"C:\Users\Андрей\Desktop\SecureDisk\SecureDisk\Common\Include" /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\Debug\moc_securedisk.cpp main.cpp securedisk.cpp
+         moc_securedisk.cpp
+         main.cpp
+         securedisk.cpp
+         Generating Code...
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Андрей\Desktop\SecureDisk\Win32\Debug\\SecureDisk.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.4.1\5.4\msvc2013_opengl\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib "C:\Users\Андрей\Desktop\SecureDisk\SecureDisk\Common\Debug\cryptlib.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Андрей\Desktop\SecureDisk\Win32\Debug\SecureDisk.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Андрей\Desktop\SecureDisk\Win32\Debug\SecureDisk.lib" /MACHINE:X86 /SAFESEH Debug\cryptohandler.obj
          Debug\moc_cryptohandler.obj
          Debug\moc_generatekey.obj
-         Debug\moc_keypathdialog.obj
          Debug\moc_securedisk.obj
          Debug\moc_storage.obj
          Debug\qrc_securedisk.obj
          Debug\generatekey.obj
-         Debug\keypathdialog.obj
          Debug\main.obj
          Debug\securedisk.obj
          Debug\storage.obj
-     1>cryptlib.lib(cryptlib.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
          SecureDisk.vcxproj -> C:\Users\Андрей\Desktop\SecureDisk\Win32\Debug\SecureDisk.exe
      1>Done Building Project "C:\Users\Андрей\Desktop\SecureDisk\SecureDisk\SecureDisk.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:17.55
+Time Elapsed 00:00:04.44

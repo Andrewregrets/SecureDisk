@@ -7,7 +7,6 @@
 class SecureDisk : public QMainWindow
 {
 	Q_OBJECT
-
 public:
 	SecureDisk(QWidget *parent = 0);
 	~SecureDisk();

@@ -7,8 +7,16 @@
 #include "cryptocpp\rsa.h"
 #include "cryptocpp\randpool.h"
 #include "cryptocpp\hex.h"
+#include <cryptocpp\osrng.h>
+#include <cryptocpp\modes.h>
 
 using namespace CryptoPP;
+
+static OFB_Mode<AES>::Encryption s_globalRNG;
+RandomNumberGenerator & GlobalRNG()
+{
+	return s_globalRNG;
+}
 
 CryptoHandler::CryptoHandler(QObject *parent)
 : QObject(parent)
@@ -21,11 +29,11 @@ CryptoHandler::~CryptoHandler()
 
 }
 
-QString CryptoHandler::randomStrGen(int length)
+string CryptoHandler::randomStrGen(int length)
 {
-	static QString charset
+	static string charset
 		= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	QString result;
+	string result;
 	result.resize(length);
 	for (int i = 0; i < length; i++)
 	{
@@ -34,40 +42,38 @@ QString CryptoHandler::randomStrGen(int length)
 	return result;
 }
 
-QString CryptoHandler::RSAEncryptString(QString publickeyfile,
-										QString message)
+string CryptoHandler::RSAEncryptString(string publickeyfile,
+									   string message)
 {
-	QString seed = randomStrGen(50);
+	string seed = randomStrGen(50);
 
-	FileSource pubFile(publickeyfile.toStdString().c_str(), true, new HexDecoder());
+	FileSource pubFile(publickeyfile.c_str(), true, new HexDecoder());
 	RSAES_OAEP_SHA_Encryptor pub(pubFile);
 	RandomPool randPool;
-	randPool.IncorporateEntropy((byte *)seed.toStdString().c_str(),
-								strlen(seed.toStdString().c_str()));
+	//randPool.Put((byte *)seed.c_str(), strlen(seed.c_str()));
+	randPool.IncorporateEntropy((byte *)seed.c_str(),
+								strlen(seed.c_str()));
 
-	std::string result;
-	StringSource(message.toStdString().c_str(), true,
+	string result;
+	StringSource(message.c_str(), true,
 				 new PK_EncryptorFilter(
 				 randPool,
 				 pub,
 				 new HexEncoder(new StringSink(result))));
-	return QString(result.c_str());
+	return result;
 }
 
-QString CryptoHandler::RSADecryptString(QString privatekeyfile,
-										QString ciphertext)
+string CryptoHandler::RSADecryptString(string privatekeyfile,
+									   string ciphertext)
 {
-	FileSource privFile(privatekeyfile.toStdString().c_str(), true, new HexDecoder());
+	FileSource privFile(privatekeyfile.c_str(), true, new HexDecoder);
 	RSAES_OAEP_SHA_Decryptor priv(privFile);
-	std::string cipher = ciphertext.toStdString();
-
-	std::string result;
-	StringSource(cipher.c_str(), true,
-				 new HexDecoder(
-				 new PK_DecryptorFilter(RandomNumberGenerator(),
-				 priv,
-				 new StringSink(result))));
-	return QString::fromStdString(result);
+	std::string seed2 = IntToString(time(NULL));
+	seed2.resize(16);
+	s_globalRNG.SetKeyWithIV((byte *)seed2.data(), 16, (byte *)seed2.data());
+	string result;
+	StringSource(ciphertext, true, new HexDecoder(new PK_DecryptorFilter(GlobalRNG(), priv, new StringSink(result))));
+	return result;
 }
 
 void CryptoHandler::EncryptFile(QString publickeyfile,
@@ -75,19 +81,19 @@ void CryptoHandler::EncryptFile(QString publickeyfile,
 								QString encryptedfile)
 {
 	// Generate passphrase
-	QString passphrase = randomStrGen(50);
-	QString encrypted_passphrase = RSAEncryptString(publickeyfile,
-													passphrase);
+	string passphrase = randomStrGen(50);
+	string encrypted_passphrase = RSAEncryptString(publickeyfile.toStdString(),
+												   passphrase);
 
 	// Encrypt the file and save encrypted data to the string
-	std::string data;
+	string data;
 	FileSource f(filetoencrypt.toStdString().c_str(), true,
 				 new DefaultEncryptorWithMAC(
-				 passphrase.toStdString().c_str(),
+				 passphrase.c_str(),
 				 new HexEncoder(new StringSink(data))));
 
 	// Append encrypted passphrase to the beginning of the string
-	data = encrypted_passphrase.toStdString() + data;
+	data = encrypted_passphrase + data;
 
 	// Save string to the file
 	StringSource ss(data.c_str(), true,
@@ -103,9 +109,10 @@ void CryptoHandler::DecryptFile(QString privatekeyfile,
 	FileSource ff(filetodecrypt.toStdString().c_str(), true, new StringSink(data));
 
 	// Grab passphrase from the string
-	QString encrypted_passphrase = QString::fromStdString(data.substr(0, 256));
-	QString passphrase = RSADecryptString(privatekeyfile,
-										  encrypted_passphrase);
+	string encrypted_passphrase = data.substr(0, 256);
+	encrypted_passphrase.resize(256);
+	string passphrase = RSADecryptString(privatekeyfile.toStdString(),
+										 encrypted_passphrase);
 
 	// Grab cipher from the string
 	std::string cipher = data.substr(256, data.length()).c_str();
@@ -113,6 +120,6 @@ void CryptoHandler::DecryptFile(QString privatekeyfile,
 	// Decrypt string and save to file
 	StringSource s(cipher.c_str(), true,
 				   new HexDecoder(new DefaultDecryptorWithMAC(
-				   passphrase.toStdString().c_str(),
+				   passphrase.c_str(),
 				   new FileSink(decryptedfile.toStdString().c_str()))));
 }
